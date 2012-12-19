@@ -16,7 +16,7 @@ Libraries::add('li3_model');
 ```  
 We know you want to store and manage blog posts in your database. According to Lithium conventions, you create a new file called `Posts.php` in `app/models`. The basic structure looks like this:
 
-###Useage
+###Usage
 ```php
 <?php
 
