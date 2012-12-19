@@ -2,7 +2,6 @@
 
 #### A more flexible model that based on the [Lithium](https://github.com/UnionOfRAD/lithium) framework
 
-## Model Creation and Configurtion
 li3_model is extended as lithium plugin that provide a more flexible,lighter,and faster model and is only 30kb   
 
 ###install
