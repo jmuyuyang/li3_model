@@ -3,7 +3,7 @@
 #### A more flexible model that based on the [Lithium](https://github.com/UnionOfRAD/lithium) framework
 
 ## Model Creation and Configurtion
-li3_model is extended as lithium plugin that provide a more flexible,lighter,and faster model and is only 30kbs 
+li3_model is extended as lithium plugin that provide a more flexible,lighter,and faster model and is only 30kb   
 
 ###install
 Checkout the code to either of your library directories:  
@@ -403,7 +403,7 @@ example:
  
 Use the function `instance()` to close the connection to save the resources.
 
-###Work with two tables 
+###Working with two tables like as sql join
 example:
 
 ```php
@@ -416,6 +416,6 @@ example:
 		));
 ?>  
 ```
-The `alias` is the alias of the table of `attachment`.You can use it like `m.id` pointing to the attachment's `id` ,and you can use `leftJoin` to get the data from the table `attachment`.The `table` must be the table you want to get data from.The `pKey` is the primary key,and the `fKey` is the foreign key in the `attachment`.
+The `alias` is the alias of the table of `attachment`.You can use it like `m.id` pointing to the attachment's `id` ,and you can use `leftJoin` to get the data from the table `attachment`.The `table` must be the join table you want to get data from.The `pKey` is the primary key,and the `fKey` is the foreign key in the `attachment`.
 
 
