@@ -46,7 +46,6 @@ class Adapter extends \lithium\data\db\DataBase {
 
 	public function connect($pConfig = 'default'){
 		$tDB = self::loadConfig($pConfig);
-		//$tDB = array('host'=>'localhost','database'=>'ptvideo','user'=> 'root','pass'=>'');
 		$dsn = sprintf("mysql:host=%s;port=%s;dbname=%s", $tDB['host'], $tDB['port'], $tDB['database']);
 		$options = array(
 			PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
@@ -150,7 +149,6 @@ class Adapter extends \lithium\data\db\DataBase {
 
 	function update($data,$conditions,$options = array()){
 		$sql = $this->getQuery()->update($data,$conditions);
-		echo $sql;
 		return $this->exec($sql);	
 	}
 

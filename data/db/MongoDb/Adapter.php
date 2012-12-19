@@ -32,12 +32,9 @@ class Adapter extends \lithium\data\db\DataBase {
 	}
 
 	public function connect($pConfig = 'default'){
-		/*
-		$tDB = Yaf_Registry::get('config')->db->$pConfig->toArray();
 		$tDB['host']  = 'localhost';
 		$tDB['port'] = '27017';
 		$tDB['database'] = 'test';
-		*/
 		$tDB = self::loadConfig($pConfig);
 		$auth = '';
 		if($tDB['user'] && $tDB['pass']){
