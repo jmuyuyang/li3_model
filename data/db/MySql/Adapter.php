@@ -136,7 +136,7 @@ class Adapter extends \lithium\data\db\DataBase {
 		return $id?:true;
 	}
 
-	function replace($data){
+	function replace($data,$options = array()){
 		$sql = $this->getQuery()->replace($data,'REPLACE');
 		if(!$this->exec($sql)) return false;
 		return $this->_db->lastInsertId();

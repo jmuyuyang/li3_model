@@ -4,7 +4,7 @@
 */
 namespace li3_model\data\db;
 
-class DataBase{
+abstract class DataBase{
 	public $_db;
 	protected $_meta;
 	protected static $_dbConfig;
@@ -18,9 +18,7 @@ class DataBase{
 		$this->_meta = $config;
 	}
 
-	public function connect(){
-
-	}
+	abstract public function connect();
 
 	function create($data){
 		$this->_data = $data;
@@ -48,6 +46,36 @@ class DataBase{
 			return $this->$type($data);
 		}
 	}
+
+	/*
+	*get data from database
+	*@params $type string (all or first)
+	*		 $conditions array 
+	*/
+	abstract public function read($type,$conditions = array());
+
+	/* insert data into database
+	*@params $data array insert data
+			 $options array
+	*/
+	abstract public function insert($data,$options = array());
+
+	/*insert data into database with type replace 
+	@prams $data array insert data
+	       $options array
+	*/
+	abstract public function replace($data,$options = array());
+	
+	/*update data in the database 
+	*@params $data array update data 
+			 $conditions array update conditions
+	*/
+	abstract public function update($data,$conditions,$options = array());
+	
+	/*remove data in database
+	*@params $where array delete conditions 
+	*/
+	abstract public function remove($where,$options = array());
 
 	public static function loadConfig($item){
 		if(!self::$_dbConfig){

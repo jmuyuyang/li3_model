@@ -75,7 +75,7 @@ class Adapter extends \lithium\data\db\DataBase {
 		return false;
 	} 
 
-	public function insert($value, $safe = true) {
+	public function insert($value, $options = array() {
 		return $this->getCollect()->insert($value,array('safe' => true));
 	} 
 
