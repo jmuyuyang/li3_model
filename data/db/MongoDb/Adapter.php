@@ -9,7 +9,7 @@ use Mongo;
 use MongoId;
 use li3_model\data\db\MongoDb\Query;
 
-class Adapter extends \lithium\data\db\DataBase {
+class Adapter extends li3_model\data\db\DataBase {
 	public $error;
 	protected $_ndb;
 	private $_cursor;

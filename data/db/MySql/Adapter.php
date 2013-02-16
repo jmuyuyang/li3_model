@@ -12,7 +12,7 @@ use li3_model\data\db\QueryException;
 use li3_model\data\db\MySql\Query;
 use li3_model\data\db\MySql\Result;
 
-class Adapter extends \lithium\data\db\DataBase {	
+class Adapter extends li3_model\data\db\DataBase {	
 	public $error;
 	private $_query;
 	
