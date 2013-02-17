@@ -79,7 +79,7 @@ abstract class DataBase{
 
 	public static function loadConfig($item){
 		if(!self::$_dbConfig){
-			self::$_dbConfig = include LITHIUM_LIBRARY_PATH.'/li3_model/config/dbConfig.php';
+			self::$_dbConfig = include LITHIUM_APP_PATH.'/libraries/li3_model/config/dbConfig.php';
 		}
 		return self::$_dbConfig[$item];
 	}
