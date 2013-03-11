@@ -32,8 +32,6 @@ abstract class DataBase{
             $this->error = 'Invalid Data To Save';
             return false;
         }
-		print_r($this->_data);
-		print_r($this->_meta);
       	if($type == 'update'){
       		if(!array_key_exists($this->_meta['key'], $data)){
       			$this->error = 'key is not exists';
