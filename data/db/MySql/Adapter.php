@@ -8,7 +8,6 @@ use PDO;
 use PDOStatement;
 use PDOException;
 use Exception;
-use li3_model\data\db\QueryException;
 use li3_model\data\db\MySql\Query;
 use li3_model\data\db\MySql\Result;
 
@@ -106,7 +105,7 @@ class Adapter extends \li3_model\data\db\DataBase {
 		}
 		if(!$this->_query instanceof PDOStatement){
 			$errors = $this->_db->errorInfo();
-			throw new QueryException($errors[2]);
+			throw new Exception($errors[2]);
 			return false;
 		}
 		return new Result($this->_query); 
