@@ -53,6 +53,7 @@ class Adapter extends \li3_model\data\db\DataBase {
 		try{
 			$db = new PDO($dsn, $tDB['user'], $tDB['pass'],$options);
 		}catch (PDOException $e){
+			throw new Exception($e);
 			return false;
 		}		
 		return $db;

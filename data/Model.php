@@ -52,11 +52,11 @@ class Model{
 	}
 
 	public static function fixDefault(){
+		$name = static::$_meta['connection'];
+        isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
 		if(static::$_defaultMeta){
 			static::$_meta = $_defaultMeta && $_defaultMeta = array();
 		}
-		$name = static::$_meta['connection'];
-		isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
 	}
      	
 	public function query(){
