@@ -73,7 +73,7 @@ abstract class DataBase{
 	/*remove data in database
 	*@params $where array delete conditions 
 	*/
-	abstract public function remove($where,$options = array());
+	abstract public function delete($where,$options = array());
 
 	public static function loadConfig($item){
 		if(!self::$_dbConfig){

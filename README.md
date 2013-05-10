@@ -139,12 +139,12 @@ $success = $this->insert($data);
 ?>
 ```
 
-There is a more flexible function `sql()` you can exploit it with yourself `SQL` statements.Now let us glimpse it.
+There is a more flexible function `query()` you can exploit it with yourself `SQL` statements.Now let us glimpse it.
 
 ```php
 <?php
 //prepare sql statement
-$success = $user->sql("select * from where name=:name",array(":name",$name));
+$success = $user->query("select * from where name=:name",array(":name",$name));
 ?>
 ```
 This type can use the pdo filter the data.
@@ -152,7 +152,7 @@ This type can use the pdo filter the data.
 ```php
 <?php
 //prepare sql statement
-$filter = $this->adapter()->filter();
+$filter = $this->escape();
 $success = $user->sql("select * from where name=".$filter($name));
 ?>
 ```

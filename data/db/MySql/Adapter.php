@@ -141,7 +141,7 @@ class Adapter extends \li3_model\data\db\DataBase {
 		return $this->_db->lastInsertId();
 	}
 
-	function remove($where,$options = array()){
+	function delete($where,$options = array()){
 		$sql = $this->getQuery()->delete($where);
 		return $this->exec($sql);
 	}

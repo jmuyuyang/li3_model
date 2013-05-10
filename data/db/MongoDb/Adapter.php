@@ -79,7 +79,7 @@ class Adapter extends \li3_model\data\db\DataBase {
 		return $this->getCollect()->insert($value,array('safe' => true));
 	} 
 
-	public function remove($where, $options = array()) {
+	public function delete($where, $options = array()) {
 		$options += array('safe'=> true,'justOne' => false);
 		return $this->getCollect()->remove($where,$options);
 	} 

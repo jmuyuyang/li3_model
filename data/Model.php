@@ -10,12 +10,12 @@ class Model{
 
 	public $validator;
 
-	protected $_resolveSource = null;
 	protected $_dbApartOptions;
 
+	protected static $_adapter = 'MySql';
 	protected static $_instances = array();
 	protected static $_adapterPool = array();
-	protected static $_adapter = 'MySql';
+	protected static $_defaultMeta = array();
 	protected static $_meta  = array(
 		'connection' => 'default',
 		'source' => __CLASS__,
@@ -29,18 +29,12 @@ class Model{
 		}
 		return static::$_instances[$class];
 	}
-     	
-	public function sql(){
-		$args = func_get_args();
-		$cmd = array_shift($args);
-		if($args){
-			return static::adapter()->query($cmd,$args[0]);
-		}else{
-			return static::adapter()->query($cmd);
-		}
+
+	public static function db($name){
+		return static::adapter($name);
 	}
 
-	public function meta($item = NULL){
+	public static function meta($item = NULL){
 		if($item){
 			return static::$_meta[$item];
 		}
@@ -53,59 +47,26 @@ class Model{
 			$adapter = "li3_model\data\db\\".static::$_adapter."\Adapter";
 			static::$_adapterPool[$name] = new $adapter($name);
 		}
-		static::$_adapterPool[$name]->init(static::$_meta);
+		static::fixDefault();
 		return static::$_adapterPool[$name];
 	}
 
-	public function create($pData){
-		if(!$this->_autoValidator($pData)) return false;
-		$adapter = static::adapter();
-		$adapter->create($pData);
-		$this->resolveTable();
-		return $adapter;
+	public static function fixDefault(){
+		if(static::$_defaultMeta){
+			static::$_meta = $_defaultMeta && $_defaultMeta = array();
+		}
+		$name = static::$_meta['connection'];
+		isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
 	}
-
-	public function find($type,$conditions = array()){
-		$return = static::adapter()->read($type,$conditions);
-		$this->resolveTable();
-		return $return;
-	}
-
-	public function insert($data,$options = array()){
-		$return = static::adapter()->insert($data,$options);
-		$this->resolveTable();
-		return $return;
-	}
-
-	public function replace($data,$options = array()){
-		$return = static::adapter()->replace($data,$options);
-		$this->resolveTable();
-		return $return;
-	}
-
-	public function update($data,$conditions,$options = array()){
-		$return = static::adapter()->update($data,$conditions,$options);
-		$this->resolveTable();
-		return $return;
-	}
-
-	public function delete($where,$options = array()){
-		$return = static::adapter()->remove($where,$options);
-		$this->resolveTable();
-		return $return;
-	}
-
-	public function getIncrementId($namespace,$source = 'seq',$options = array()){
-		return static::adapter()->autoIncrement($namespace,$source = 'seq',$options = array());
-	}
-
-	public function close(){
-		static::adapter()->close();
-	}
-
-	public function db($name){
-		static::$_meta['connection'] = $name;
-		return $this;
+     	
+	public function query(){
+		$args = func_get_args();
+		$cmd = array_shift($args);
+		if($args){
+			return static::adapter()->query($cmd,$args[0]);
+		}else{
+			return static::adapter()->query($cmd);
+		}
 	}
 
 	public function table($table,$key = "id",$cut_id = NULL){
@@ -114,18 +75,49 @@ class Model{
 			$pad = "_".str_pad($id%$tableDiv['div'],$tableDiv['bit'],0,STR_PAD_LEFT);
 		}
 		$source = $table.$pad;
-		$this->_resolveSource = array(static::$_meta['source'],static::$_meta['key']);
+		static::$_defaultMeta = static::$_meta;
 		static::$_meta['source'] = $source;
-		static::$_meta['key'] = $key;
+		static::$_meta['key'] = $source;
 		return $this;
 	}
 
-	public function resolveTable(){
-		if($this->_resolveSource){
-			static::$_meta['source'] = $this->_resolveSource[0];
-			static::$_meta['key'] = $this->_resolveSource[1];
-			$this->_resolveSource = array();
-		}
+	public function create($pData){
+		if(!$this->_autoValidator($pData)) return false;
+		$adapter = static::adapter();
+		$adapter->create($pData);
+		return $adapter;
+	}
+
+	public function escape(){
+		return static::adapter()->filter();
+	}
+
+	public function find($type,$conditions = array()){
+		return static::adapter()->read($type,$conditions);
+	}
+
+	public function insert($data,$options = array()){
+		return static::adapter()->insert($data,$options);
+	}
+
+	public function replace($data,$options = array()){
+		return static::adapter()->replace($data,$options);
+	}
+
+	public function update($data,$conditions,$options = array()){
+		return static::adapter()->update($data,$conditions,$options);
+	}
+
+	public function delete($where,$options = array()){
+		return static::adapter()->delete($where,$options);
+	}
+
+	public function getIncrementId($namespace,$source = 'seq',$options = array()){
+		return static::adapter()->autoIncrement($namespace,$source = 'seq',$options = array());
+	}
+
+	public function close(){
+		static::adapter()->close();
 	}
 
 	public function errors($error = NULL){
