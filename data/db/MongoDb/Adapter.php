@@ -156,7 +156,7 @@ class Adapter extends \li3_model\data\db\DataBase {
 			if($this->query($options)){
 				$source = $this->_meta['source'];
 				$this->_meta['source'] = $options['out'];
-				$this->selectall(array());
+				$this->read("all");
 				$this->_meta['source'] = $source;
 				return $this;
 			}
