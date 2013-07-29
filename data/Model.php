@@ -10,8 +10,6 @@ class Model{
 
 	public $validator;
 
-	protected $_dbApartOptions;
-
 	protected static $_adapter = 'MySql';
 	protected static $_instances = array();
 	protected static $_adapterPool = array();
@@ -19,7 +17,8 @@ class Model{
 	protected static $_meta  = array(
 		'connection' => 'default',
 		'source' => __CLASS__,
-		'key' => 'id'
+		'key' => 'id',
+		'apart_options' => array()
 	);
 
 	public static function instance(){
@@ -32,6 +31,10 @@ class Model{
 
 	public static function db($name){
 		return static::adapter($name);
+	}
+
+	public static compute($apart_id){
+		static::$_meta['source'] .= static::_computeTableId($apart_id);
 	}
 
 	public static function meta($item = NULL){
@@ -47,15 +50,15 @@ class Model{
 			$adapter = "li3_model\data\db\\".static::$_adapter."\Adapter";
 			static::$_adapterPool[$name] = new $adapter($name);
 		}
-		static::fixDefault();
+		static::fixDefault($name);
 		return static::$_adapterPool[$name];
 	}
 
-	public static function fixDefault(){
-		$name = static::$_meta['connection'];
-        isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
+	public static function fixDefault($name){
+		isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
 		if(static::$_defaultMeta){
-			static::$_meta = $_defaultMeta && $_defaultMeta = array();
+			static::$_meta = static::$_defaultMeta;
+			static::$_defaultMeta = array();
 		}
 	}
      	
@@ -68,16 +71,17 @@ class Model{
 			return static::adapter()->query($cmd);
 		}
 	}
-
-	public function table($table,$key = "id",$cut_id = NULL){
-		$pad = '';
-		if($tableDiv = $this->_dbApartOptions && $cut_id){
-			$pad = "_".str_pad($id%$tableDiv['div'],$tableDiv['bit'],0,STR_PAD_LEFT);
+	
+	/*model table temporary replacement
+	*tend to fix default
+	*/
+	public function table($table,$key = "id",$apart_id = NULL){
+		if($apart_id){
+			$table .= static::_computeTableId($apart_id);
 		}
-		$source = $table.$pad;
 		static::$_defaultMeta = static::$_meta;
-		static::$_meta['source'] = $source;
-		static::$_meta['key'] = $source;
+		static::$_meta['source'] = $table;
+		static::$_meta['key'] = $key;
 		return $this;
 	}
 
@@ -134,6 +138,13 @@ class Model{
 			}
 		}
 		return true;
+	}
+	
+	protected static function _computeTableId($apart_id){
+		if($tableDiv = static::$_meta['apart_options']){
+			return "_".str_pad($apart_id%$tableDiv['div'],$tableDiv['bit'],0,STR_PAD_LEFT);
+		}
+		return "";
 	}
 }
 
