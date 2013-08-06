@@ -40,7 +40,7 @@ class MasterSlave{
 		}
 	}
 
-	public static compute($apart_id){
+	public static function compute($apart_id){
 		static::$_meta['source'] .= static::_computeTableId($apart_id);
 	}
 
@@ -77,14 +77,14 @@ class MasterSlave{
 		if(isset(static::$master_slave['slave']) && is_array(self::$master_slave['slave'])){
 			if(!$this->_slave){
 				$slave = array_rand(self::$master_slave['slave']);
-				$adapter = static::adapter($slave);
+				$adapter = static::adapter(self::$master_slave['slave'][$slave]);
 				if(!$adapter){
 					$slave_arr = static::$master_slave['slave'];
 					while(!$adapter){
 						unset($slave_arr[$slave]);
 						if(!$slave_arr) break;
 						$slave = array_rand($slave_arr);
-						$adapter = static::adapter($slave);
+						$adapter = static::adapter($slave_arr[$slave]);
 					}
 				}
 				if($adapter) $this->_slave = $adapter;
