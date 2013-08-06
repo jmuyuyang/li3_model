@@ -33,7 +33,7 @@ class Model{
 		return static::adapter($name);
 	}
 
-	public static compute($apart_id){
+	public static function compute($apart_id){
 		static::$_meta['source'] .= static::_computeTableId($apart_id);
 	}
 
@@ -49,14 +49,15 @@ class Model{
 		if(!isset(static::$_adapterPool[$name])){
 			$adapter = "li3_model\data\db\\".static::$_adapter."\Adapter";
 			static::$_adapterPool[$name] = new $adapter($name);
+			static::$_adapterPool[$name]->init(static::$_meta);
 		}
 		static::fixDefault($name);
 		return static::$_adapterPool[$name];
 	}
 
 	public static function fixDefault($name){
-		isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
 		if(static::$_defaultMeta){
+			isset(static::$_adapterPool[$name]) && static::$_adapterPool[$name]->init(static::$_meta);
 			static::$_meta = static::$_defaultMeta;
 			static::$_defaultMeta = array();
 		}

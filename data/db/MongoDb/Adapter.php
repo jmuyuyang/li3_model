@@ -42,8 +42,7 @@ class Adapter extends \li3_model\data\db\DataBase {
 		}
 		$host = "mongodb://{$auth}{$tDB['host']}:{$tDB['port']}";
 		$this->_ndb = new Mongo($host);
-		$ndb = $this->_ndb->selectDB($tDB['database']);
-		return $ndb;
+		return $this->_ndb->selectDB($tDB['database']);
 	}
 
 	public function getQuery(){

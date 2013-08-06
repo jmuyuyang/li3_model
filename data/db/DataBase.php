@@ -10,8 +10,11 @@ abstract class DataBase{
 	protected static $_dbConfig;
 	protected $_data = array();
 
-	public function __construct($connection){
+	public function __construct($connection,$master_slave = false){
 		$this->_db = $this->connect($connection);
+		if(!$this->_db && !$master_slave){		
+			throw new Exception("connection error");
+		}
 	}
 	
 	public function init($config){
